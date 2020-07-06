@@ -34,15 +34,79 @@ namespace puzzle15
             {
                 for (int col = 1; col < 5; col++)
                 {
-                    block = new PuzzleBlock();
-                    block.Top = row * 85;
-                    block.Left = col * 85;
-                    block.Text = blockCount.ToString();
+                    block = new PuzzleBlock()
+                    {
+                        Top = row * 80,
+                        Left = col * 80,
+                        Text = blockCount.ToString(),
+
+                       // FlatStyle = FlatStyle.Flat,
+                       // FlatAppearance.BorderSize, //=0
+                        Name = "block" + blockCount.ToString()
+                    };
+
+                    block.Click += new EventHandler(Block_Click);
+
+                    if (blockCount == 16)
+                    {
+                        block.Name = "EmptyBlock";
+                        block.Text = string.Empty;
+                        block.BackColor = Color.CornflowerBlue;
+                    }
                     blockCount++;
                     this.Controls.Add(block);
                 }
 
             }
+
         }
+
+        private void Block_Click(object sender, EventArgs e)
+        {
+            Button block = (Button)sender;
+            if (IsAdjacent(block))
+            {
+                SwapBlocks(block);
+            }
+        }
+
+        private void SwapBlocks(Button block)
+        {
+            Button emptyBlock = (Button)this.Controls["EmptyBlock"];
+            Point oldLocation = block.Location;
+            block.Location = emptyBlock.Location;
+            emptyBlock.Location = oldLocation;
+        }
+
+        private bool IsAdjacent(Button block)
+        {
+            double a;
+            double b;
+            double c;
+            Button emptyBlock = (Button)this.Controls["EmptyBlock"];
+
+            a = Math.Abs(emptyBlock.Top - block.Top);
+            b = Math.Abs(emptyBlock.Left - block.Left);
+            c = Math.Sqrt(Math.Pow(a, 2) + Math.Pow(b, 2));
+            if (c < 81)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+      /*  private void ShuffleBlocks()
+        {
+            string blockName;
+            for (int i = 0; i < 100; i++)
+            {
+                blockName = "Block" + rand.Next(1, 16);
+                Button block = (Button)this.Controls[blockName];
+                SwapBlocks(block);
+            } 
+        } */
     }
 }

@@ -19,7 +19,7 @@ namespace puzzle15
         {
             this.Height = 70;
             this.Width = 70;
-            this.BackColor = Color.LimeGreen;
+            this.BackColor = Color.Purple;
             this.Text = "0";
             this.Font = new Font("Roboto", 18);
         }
